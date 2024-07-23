@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Country - <%= country.name.official %></title>
+  <link rel="stylesheet" href="/styles.css">
+  <%- include("layout/_theme") %>
+</head>
+
+<body class="bg-gray-100 dark:bg-slate-800">
+  <%- include("layout/_nav") %>
+    <main class="max-w-screen-xl mx-auto p-4">
+      <a href="/"
+        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 md:mb-10 mb-8 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 inline-flex items-center space-x-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M5 12l14 0" />
+          <path d="M5 12l6 6" />
+          <path d="M5 12l6 -6" />
+        </svg>
+        <span>Back</span>
+      </a>
+      <div class="grid lg:grid-cols-2 grid-cols-1 xl:gap-32 gap-8">
+        <figure class="max-w-2xl w-full mx-auto">
+          <img class="w-full aspect-[4/3] object-cover" src="<%= country.flags.svg %>" alt="<%= country.flags.alt %>">
+        </figure>
+        <div>
+          <div class="flex flex-col justify-around h-full">
+            <h1 class="font-bold text-3xl text-black dark:text-white">
+              <%= country.name.common %>
+            </h1>
+            <div class="flex md:flex-row flex-col justify-between md:gap-0 gap-8">
+              <ul class="space-y-3 text-left text-gray-900 dark:text-white text-sm mt-3">
+                <li class="flex items-center space-x-3">
+                  <span>Native Name: <span class="font-semibold text-gray-500 dark:text-gray">
+                      <%= country.name.official %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <span>Population: <span class="font-semibold text-gray-500 dark:text-gray">
+                      <% const formattedPopulation=parseInt(country.population, 10).toLocaleString(); %>
+                        <%= formattedPopulation %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <span>Region: <span class="font-semibold text-gray-500 dark:text-gray">
+                      <%= country.region %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <span>Sub Region: <span class="font-semibold text-gray-500 dark:text-gray">
+                      <%= country.subregion %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <span>Capital: <span class="font-semibold text-gray-500 dark:text-gray">
+                      <%= country.capital[0] %>
+                    </span></span>
+                </li>
+              </ul>
+              <ul class="space-y-3 text-left text-gray-900 dark:text-white text-sm mt-3">
+                <li class="flex items-center space-x-3">
+                  <span>Currencies: <span class="font-semibold text-gray-500 dark:text-gray">
+                      <% for (const key in country.currencies) { %>
+                        <%= country.currencies[key].name %>
+                          <% } %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <span>Languages: <span class="font-semibold text-gray-500 dark:text-gray">
+                      <% for (const key in country.languages) { %>
+                        <%= country.languages[key] %>
+                          <% } %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <% const
+                    googleMapsLink=`https://www.google.com/maps?q=${country.capitalInfo.latlng[0]},${country.capitalInfo.latlng[1]}`;
+                    %>
+                    <span>Location: <span class="font-semibold text-gray-500 dark:text-gray">
+                        <a href="<%= googleMapsLink %>" target="_blank">Open in Google Maps</a>
+                      </span></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="/js/index.js"></script>
+</body>
+
+</html>

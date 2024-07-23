@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="stylesheet" href="/styles.css">
+  <%- include("layout/_theme") %>
+</head>
+
+<body class="bg-gray-100 dark:bg-slate-800">
+  <%- include("layout/_nav") %>
+    <main class="max-w-screen-xl mx-auto p-4">
+      <form method="GET" action="/" id="filter-form">
+        <div class="flex md:flex-row flex-col gap-3 justify-between w-full">
+          <div class="flex items-center max-w-sm">
+            <label for="simple-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500 dark:text-gray-400" width="24"
+                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  class="icon icon-tabler icons-tabler-outline icon-tabler-world-search">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M21 12a9 9 0 1 0 -9 9" />
+                  <path d="M3.6 9h16.8" />
+                  <path d="M3.6 15h7.9" />
+                  <path d="M11.5 3a17 17 0 0 0 0 18" />
+                  <path d="M12.5 3a16.984 16.984 0 0 1 2.574 8.62" />
+                  <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                  <path d="M20.2 20.2l1.8 1.8" />
+                </svg>
+              </div>
+              <input type="text" id="simple-search" name="search"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search country..." value="<%= searchQuery %>" />
+            </div>
+            <button type="submit"
+              class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+              </svg>
+              <span class="sr-only">Search</span>
+            </button>
+          </div>
+          <div class="max-w-sm">
+            <select value="<%= searchQuery %>" name="region" id="region-select"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option value="">All Regions</option>
+              <option value="Africa" <% if (regionFilter==='Africa' ) { %> selected <% } %>>Africa</option>
+              <option value="Americas" <% if (regionFilter==='Americas' ) { %> selected <% } %>>Americas</option>
+              <option value="Asia" <% if (regionFilter==='Asia' ) { %> selected <% } %>>Asia</option>
+              <option value="Europe" <% if (regionFilter==='Europe' ) { %> selected <% } %>>Europe</option>
+              <option value="Oceania" <% if (regionFilter==='Oceania' ) { %> selected <% } %>>Oceania</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 xl:gap-16 md:gap-12 gap-8 py-6 md:px-0 px-6">
+        <% for (country of countries) { %>
+          <a href="/countries/<%= country.name.common %>" class="group bg-white dark:bg-slate-900 shadow-md rounded-md">
+            <div class="aspect-video w-full overflow-hidden rounded-t-lg bg-gray-200">
+              <img src="<%= country.flags.svg %>" alt="<%= country.flags.alt %>"
+                class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <div class="p-4">
+              <h3 class="text-sm text-black dark:text-white font-bold">
+                <%= country.name.official %>
+              </h3>
+
+              <ul class="space-y-1 text-left text-gray-500 dark:text-gray-400 text-xs mt-3">
+                <li class="flex items-center space-x-3">
+                  <span>Population: <span class="font-semibold text-gray-900 dark:text-white">
+                      <% const formattedPopulation=parseInt(country.population, 10).toLocaleString(); %>
+                        <%= formattedPopulation %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <span>Region: <span class="font-semibold text-gray-900 dark:text-white">
+                      <%= country.region %>
+                    </span></span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <span>Capital: <span class="font-semibold text-gray-900 dark:text-white">
+                      <%= country.capital %>
+                    </span></span>
+                </li>
+              </ul>
+            </div>
+          </a>
+          <% } %>
+      </div>
+      <nav aria-label="Page navigation example">
+        <ul class="flex -space-x-px text-base h-10 justify-center">
+          <% if (pagination.previous) { %>
+            <li>
+              <a href="?page=<%= pagination.previous.page %>&search=<%= searchQuery %>&region=<%= regionFilter %>"
+                class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+            </li>
+            <% } %>
+              <% if (currentPage> 3) { %>
+                <li>
+                  <a href="?page=1&search=<%= searchQuery %>&region=<%= regionFilter %>"
+                    class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                </li>
+                <% if (currentPage> 4) { %>
+                  <li>
+                    <span
+                      class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
+                  </li>
+                  <% } %>
+                    <% } %>
+                      <% for (let i=Math.max(1, currentPage - 2); i <=Math.min(pagination.totalPages, currentPage + 2);
+                        i++) { %>
+                        <li>
+                          <a href="?page=<%= i %>&search=<%= searchQuery %>&region=<%= regionFilter %>"
+                            class="flex items-center justify-center px-4 h-10 leading-tight <% if (i === currentPage) { %> text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white <% } else { %> text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white <% } %>">
+                            <%= i %>
+                          </a>
+                        </li>
+                        <% } %>
+                          <% if (currentPage < pagination.totalPages - 2) { %>
+                            <% if (currentPage < pagination.totalPages - 3) { %>
+                              <li>
+                                <span
+                                  class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
+                              </li>
+                              <% } %>
+                                <li>
+                                  <a href="?page=<%= pagination.totalPages %>&search=<%= searchQuery %>&region=<%= regionFilter %>"
+                                    class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <%= pagination.totalPages %>
+                                  </a>
+                                </li>
+                                <% } %>
+                                  <% if (pagination.next) { %>
+                                    <li>
+                                      <a href="?page=<%= pagination.next.page %>&search=<%= searchQuery %>&region=<%= regionFilter %>"
+                                        class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                                    </li>
+                                    <% } %>
+        </ul>
+      </nav>
+      </div>
+    </main>
+    <script src="/js/index.js"></script>
+</body>
+
+</html>
