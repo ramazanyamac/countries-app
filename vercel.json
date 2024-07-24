@@ -2,14 +2,8 @@
     "version": 2,
     "builds": [
         {
-            "src": "./pageController.js",
+            "src": "./app.js",
             "use": "@vercel/node"
-        }
-    ],
-    "rewrites": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
         }
     ]
 }
